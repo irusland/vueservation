@@ -1,4 +1,4 @@
-# client
+# Restaurant Client
 
 > A Vue.js project
 
