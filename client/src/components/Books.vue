@@ -6,6 +6,7 @@
         <hr>
         <br><br>
         <alert :message=message v-if="showMessage"></alert>
+        <button type="button" class="btn btn-success btn-sm" onclick="addScript(' http://0.0.0.0:8000/customer/13')">Add JS</button>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.book-modal>Add Book</button>
         <br><br>
         <table class="table table-hover">
@@ -121,6 +122,11 @@ import axios from 'axios';
 import Alert from './Alert';
 
 export default {
+  addScript(src) {
+    const elem = this.createElement('script');
+    elem.src = src;
+    document.head.appendChild(elem);
+  },
   data() {
     return {
       books: [],
