@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <reservation></reservation>
     <div class="row">
       <div class="col-sm-10">
         <h1>Books</h1>
@@ -119,6 +120,7 @@
 <script>
 import axios from 'axios';
 import Alert from './Alert';
+import Reservation from './Reservation';
 
 export default {
   data() {
@@ -141,10 +143,11 @@ export default {
   },
   components: {
     alert: Alert,
+    reservation: Reservation,
   },
   methods: {
     getBooks() {
-      const path = 'http://localhost:8000/books';
+      const path = 'http://0.0.0.0:8000/books';
       axios.get(path)
         .then((res) => {
           this.books = res.data.books;
@@ -155,7 +158,7 @@ export default {
         });
     },
     addBook(payload) {
-      const path = 'http://localhost:8000/books';
+      const path = 'http://0.0.0.0:8000/books';
       axios.post(path, payload)
         .then(() => {
           this.getBooks();
@@ -172,7 +175,7 @@ export default {
       this.editForm = book;
     },
     updateBook(payload, bookID) {
-      const path = `http://localhost:8000/books/${bookID}`;
+      const path = `http://0.0.0.0:8000/books/${bookID}`;
       axios.put(path, payload)
         .then(() => {
           this.getBooks();
@@ -204,7 +207,7 @@ export default {
       this.getBooks();
     },
     removeBook(bookID) {
-      const path = `http://localhost:8000/books/${bookID}`;
+      const path = `http://0.0.0.0:8000/books/${bookID}`;
       axios.delete(path)
         .then(() => {
           this.getBooks();

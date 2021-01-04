@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import HelloWorld from '@/components/HelloWorld';
 import Ping from '@/components/Ping';
 import Books from '@/components/Books';
+import Reservation from "../components/Reservation";
 
 Vue.use(Router);
 
@@ -15,6 +16,10 @@ export default new Router({
     },
     {
       path: '/',
+      component: Reservation,
+    },
+    {
+      path: '/books',
       name: 'Books',
       component: Books,
     },

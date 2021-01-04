@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <b-alert variant="success" show>{{ message }}</b-alert>
     <br>
   </div>
