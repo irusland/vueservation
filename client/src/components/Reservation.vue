@@ -22,7 +22,8 @@
                       type="text"
                       v-model="name"
                       required
-                      placeholder="Ваше имя">
+                      placeholder="Ваше имя"
+                      :disabled=isNameAutofilled>
         </b-form-input>
       </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -40,10 +41,9 @@ export default {
   name: 'Reservation',
   data() {
     return {
-      errors: [],
       name: null,
       email: null,
-      movie: null,
+      isNameAutofilled: false,
     };
   },
   methods: {
@@ -59,13 +59,17 @@ export default {
   computed: {
     emailValidate() {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      this.isNameAutofilled = false;
       if (!re.test(this.email)) {
         return false;
       }
       const path = `${apiUrl}/users`;
       axios.get(path, { params: { email: this.email } })
         .then((res) => {
-          this.name = res.data.name;
+          if (res.data.name) {
+            this.isNameAutofilled = true;
+            this.name = res.data.name;
+          }
         })
         .catch((error) => {
           console.error(error);
