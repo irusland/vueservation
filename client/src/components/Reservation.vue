@@ -26,6 +26,58 @@
                       :disabled=isNameAutofilled>
         </b-form-input>
       </b-form-group>
+      <b-card bg-variant="light">
+        <b-form-group
+          label-cols-lg="3"
+          label="Reservation"
+          label-size="lg"
+          label-class="font-weight-bold pt-0"
+          class="mb-0"
+        >
+          <b-form-group
+            label="Choose restaurant"
+            label-for="restaurant"
+            label-cols-sm="3"
+            label-align-sm="right"
+          >
+            <b-form-select
+              id="restaurant"
+              v-model="selected"
+              :select-size="1"
+              :options="options"
+            >
+            </b-form-select>
+            <p>{{getRestaurant(selected)}}</p>
+          </b-form-group>
+
+          <b-form-group
+            label="City:"
+            label-for="nested-city"
+            label-cols-sm="3"
+            label-align-sm="right"
+          >
+            <b-form-input id="nested-city"></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label="State:"
+            label-for="nested-state"
+            label-cols-sm="3"
+            label-align-sm="right"
+          >
+            <b-form-input id="nested-state"></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label="Country:"
+            label-for="nested-country"
+            label-cols-sm="3"
+            label-align-sm="right"
+          >
+            <b-form-input id="nested-country"></b-form-input>
+          </b-form-group>
+        </b-form-group>
+      </b-card>
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -44,6 +96,9 @@ export default {
       name: null,
       email: null,
       isNameAutofilled: false,
+      restaurant: null,
+      selected: null,
+      options: [],
     };
   },
   methods: {
@@ -55,6 +110,28 @@ export default {
       event.preventDefault();
       // Reset our form values
     },
+    getRestaurants() {
+      axios.get(`${apiUrl}/restaurants`)
+        .then((res) => {
+          this.options = [];
+          res.data.forEach((restaurantData) => {
+            const data = {
+              value: restaurantData.id,
+              text: restaurantData.address,
+            };
+            this.options.push(data);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    getRestaurant(restaurantId) {
+      if (restaurantId) {
+        return restaurantId;
+      }
+      return null;
+    },
   },
   computed: {
     emailValidate() {
@@ -64,7 +141,7 @@ export default {
         return false;
       }
       const path = `${apiUrl}/users`;
-      axios.get(path, { params: { email: this.email } })
+      axios.get(path, {params: {email: this.email}})
         .then((res) => {
           if (res.data.name) {
             this.isNameAutofilled = true;
@@ -82,6 +159,9 @@ export default {
       }
       return 'This email is not supported';
     },
+  },
+  created() {
+    this.getRestaurants();
   },
 };
 </script>
