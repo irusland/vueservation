@@ -45,9 +45,23 @@
               v-model="selected"
               :select-size="1"
               :options="options"
+              @change="setRestaurantInfo"
             >
             </b-form-select>
-            <p>{{getRestaurant(selected)}}</p>
+            <p>{{ restaurant }}</p>
+            <b-card fluid class="bg-secondary">
+
+<!--              <b-col>-->
+<!--                <b-img-->
+<!--                  rounded-->
+<!--                  fluid-->
+<!--                  v-for="picture in pictures"-->
+<!--                  :src="apiUrl+'/'+picture"-->
+<!--                  :alt="apiUrl+'/'+picture"></b-img>-->
+<!--              </b-col>-->
+              <image-holder :restaurant="restaurant" :api-url="apiUrl"></image-holder>
+            </b-card>
+
           </b-form-group>
 
           <b-form-group
@@ -86,11 +100,15 @@
 
 <script>
 import axios from 'axios';
+import ImageHolder from '@/components/ImageHolder';
 
 const apiUrl = 'http://0.0.0.0:8000';
 
 export default {
   name: 'Reservation',
+  components: {
+    ImageHolder,
+  },
   data() {
     return {
       name: null,
@@ -99,6 +117,8 @@ export default {
       restaurant: null,
       selected: null,
       options: [],
+      pictures: [],
+      apiUrl,
     };
   },
   methods: {
@@ -126,11 +146,13 @@ export default {
           console.error(error);
         });
     },
-    getRestaurant(restaurantId) {
-      if (restaurantId) {
-        return restaurantId;
-      }
-      return null;
+    setRestaurantInfo(id) {
+      axios.get(`${apiUrl}/restaurants/data`,
+        {params: {id}})
+        .then((res) => {
+          this.restaurant = res.data;
+          this.pictures = this.restaurant.pictures;
+        });
     },
   },
   computed: {

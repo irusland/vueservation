@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import HelloWorld from '@/components/HelloWorld';
 import Ping from '@/components/Ping';
 import Books from '@/components/Books';
-import Reservation from "../components/Reservation";
+import Reservation from '@/components/Reservation';
 
 Vue.use(Router);
 
