@@ -41,6 +41,7 @@
             label-align-sm="right"
           >
             <b-form-select
+              required
               id="restaurant"
               v-model="selected"
               :select-size="1"
@@ -51,7 +52,23 @@
             <image-holder :restaurant="restaurant" :api-url="apiUrl"></image-holder>
           </b-form-group>
 
-
+          <b-form-group
+            label="Time"
+            label-for="time"
+            label-cols-sm="3"
+            label-align-sm="right"
+          >
+            <date-picker
+              v-model="time"
+              valueType="format"
+              type="time"
+              :input-attr="{required: 'true'}"
+              :disabled="!restaurant"
+              format="HH:mm"
+              @change="onChange()"
+              :time-picker-options="timePickerOptions"
+            ></date-picker>
+          </b-form-group>
 
           <b-form-group
             label="Comment"
@@ -72,12 +89,15 @@
 <script>
 import axios from 'axios';
 import ImageHolder from '@/components/ImageHolder';
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 
 const apiUrl = 'http://0.0.0.0:8000';
 
 export default {
   name: 'Reservation',
   components: {
+    DatePicker,
     ImageHolder,
   },
   data() {
@@ -90,6 +110,8 @@ export default {
       options: [],
       pictures: [],
       apiUrl,
+      time: null,
+      timePickerOptions: null,
     };
   },
   methods: {
@@ -124,8 +146,16 @@ export default {
         .then((res) => {
           this.restaurant = res.data;
           this.pictures = this.restaurant.pictures;
+          this.setWorkingHours();
         });
     },
+    setWorkingHours() {
+      this.timePickerOptions = {
+        start: this.restaurant.working_hours[0],
+        step: '00:30',
+        end: this.restaurant.working_hours[1],
+      };
+    }
   },
   computed: {
     emailValidate() {

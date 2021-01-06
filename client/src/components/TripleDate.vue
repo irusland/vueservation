@@ -1,44 +1,47 @@
-<template>
-  <div class="container">
-    <date-picker
-      v-model="time1"
-      valueType="format"
-      @change="onChange()"
-    ></date-picker>
-    <date-picker v-model="time2" type="datetime"></date-picker>
-    <date-picker v-model="time3" range></date-picker>
-  </div>
-</template>
-
 <script>
-import DatePicker from "vue2-datepicker";
-import "vue2-datepicker/index.css";
+import DatePicker from 'vue2-datepicker'
 
 export default {
-  name: "Ping",
   components: { DatePicker },
   data() {
     return {
-      time1: new Date(2016, 9, 16),
-      time2: null,
-      time3: null,
-      Disabled: {
-        dates: [
-          new Date(2016, 9, 16),
-          new Date(2016, 9, 17),
-          new Date(2016, 9, 18)
-        ],
+      time1: '',
+      time2: '',
+      time3: '',
+      // custom lang
+      lang: {
+        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
+        placeholder: {
+          date: 'Select Date',
+          dateRange: 'Select Date Range'
+        }
       },
-    };
-  },
-  methods: {
-    onChange() {
-      console.log(this.time1);
-    },
-    getDisabled() {
-        console.log("asdasdasdadasd");
-        return { to: this.time1 };
+      // custom range shortcuts
+      shortcuts: [
+        {
+          text: 'Today',
+          onClick: () => {
+            this.time3 = [ new Date(), new Date() ]
+          }
+        }
+      ],
+      timePickerOptions:{
+        start: '00:00',
+        step: '00:30',
+        end: '23:30'
+      }
     }
-  },
-};
+  }
+}
 </script>
+
+<template>
+  <div>
+    <date-picker v-model="time1" :first-day-of-week="1"></date-picker>
+    <date-picker v-model="time2" type="datetime" :time-picker-options="timePickerOptions"></date-picker>
+    <date-picker v-model="time3" range :shortcuts="shortcuts"></date-picker>
+    <date-picker v-model="value" :lang="lang"></date-picker>
+  </div>
+</template>
