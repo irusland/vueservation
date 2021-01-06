@@ -15,7 +15,7 @@
         </template>
       </b-carousel-slide>
     </b-carousel>
-    <p class="text-justify text-center"> {{ restaurant.description }} </p>
+    <p class="text-justify text-left"> {{ restaurant.description }} </p>
   </div>
 </template>
 

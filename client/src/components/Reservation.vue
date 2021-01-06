@@ -51,31 +51,15 @@
             <image-holder :restaurant="restaurant" :api-url="apiUrl"></image-holder>
           </b-form-group>
 
-          <b-form-group
-            label="City:"
-            label-for="nested-city"
-            label-cols-sm="3"
-            label-align-sm="right"
-          >
-            <b-form-input id="nested-city"></b-form-input>
-          </b-form-group>
+
 
           <b-form-group
-            label="State:"
-            label-for="nested-state"
+            label="Comment"
+            label-for="comment"
             label-cols-sm="3"
             label-align-sm="right"
           >
-            <b-form-input id="nested-state"></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            label="Country:"
-            label-for="nested-country"
-            label-cols-sm="3"
-            label-align-sm="right"
-          >
-            <b-form-input id="nested-country"></b-form-input>
+            <b-form-input id="comment"></b-form-input>
           </b-form-group>
         </b-form-group>
       </b-card>
@@ -125,6 +109,7 @@ export default {
             const data = {
               value: restaurantData.id,
               text: restaurantData.address,
+              disabled: !restaurantData.available,
             };
             this.options.push(data);
           });
@@ -135,7 +120,7 @@ export default {
     },
     setRestaurantInfo(id) {
       axios.get(`${apiUrl}/restaurants/data`,
-        {params: {id}})
+        { params: { id } })
         .then((res) => {
           this.restaurant = res.data;
           this.pictures = this.restaurant.pictures;
