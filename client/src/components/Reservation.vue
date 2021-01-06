@@ -48,20 +48,7 @@
               @change="setRestaurantInfo"
             >
             </b-form-select>
-            <p>{{ restaurant }}</p>
-            <b-card fluid class="bg-secondary">
-
-<!--              <b-col>-->
-<!--                <b-img-->
-<!--                  rounded-->
-<!--                  fluid-->
-<!--                  v-for="picture in pictures"-->
-<!--                  :src="apiUrl+'/'+picture"-->
-<!--                  :alt="apiUrl+'/'+picture"></b-img>-->
-<!--              </b-col>-->
-              <image-holder :restaurant="restaurant" :api-url="apiUrl"></image-holder>
-            </b-card>
-
+            <image-holder :restaurant="restaurant" :api-url="apiUrl"></image-holder>
           </b-form-group>
 
           <b-form-group
