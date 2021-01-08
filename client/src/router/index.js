@@ -5,6 +5,7 @@ import Ping from '@/components/Ping';
 import Books from '@/components/Books';
 import Reservation from '@/components/Reservation';
 import TripleDate from "../components/TripleDate";
+import CheckOrderStatus from "../components/CheckOrderStatus";
 
 Vue.use(Router);
 
@@ -16,9 +17,10 @@ export default new Router({
       component: HelloWorld,
     },
     {
-      path: '/td',
-      name: 'HelloWorld',
-      component: TripleDate,
+      path: '/check',
+      name: 'Check',
+      component: CheckOrderStatus,
+      props: true,
     },
     {
       path: '/',

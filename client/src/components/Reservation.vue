@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <b-form @submit="onSubmit" @reset="onReset">
+    <b-form @submit="onSubmit">
       <b-form-group id="form-email-group"
                     label="Your email"
                     label-for="form-email-input"
@@ -65,7 +65,6 @@
               :input-attr="{required: 'true'}"
               :disabled="!restaurant"
               format="HH:mm"
-              @change="onChange()"
               :time-picker-options="timePickerOptions"
             ></date-picker>
           </b-form-group>
@@ -76,13 +75,30 @@
             label-cols-sm="3"
             label-align-sm="right"
           >
-            <b-form-input id="comment"></b-form-input>
+            <b-form-input id="comment" v-model="comment"></b-form-input>
           </b-form-group>
         </b-form-group>
       </b-card>
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="submit" variant="primary" v-b-modal.validation-modal>Submit</b-button>
     </b-form>
+    <b-modal ref="validationModal"
+             id="validation-modal"
+             title="Add a new book"
+             hide-footer>
+      <b-form class="w-100">
+        <b-form-group id="form-title-group"
+                      :label="order_id"
+                      label-for="form-title-input">
+        </b-form-group>
+        <b-form-group id="form-author-group"
+                      label="Author:"
+                      label-for="form-author-input">
+          asdasd
+        </b-form-group>
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
@@ -112,16 +128,36 @@ export default {
       apiUrl,
       time: null,
       timePickerOptions: null,
+      comment: null,
+      order_id: null,
+      is_validated: null,
     };
   },
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
-    },
-    onReset(event) {
-      event.preventDefault();
-      // Reset our form values
+      const data = {
+        email: this.email,
+        name: this.name,
+        restaurant_id: this.restaurant.id,
+        time: this.time,
+        comment: this.comment,
+      };
+      alert(JSON.stringify(data));
+      let response = null;
+      axios.post(`${apiUrl}/orders`, data)
+        .then((res) => {
+          response = res.data;
+          this.order_id = res.data.id;
+          this.is_validated = res.data.is_validated;
+          localStorage.setItem('order_id', res.data.id);
+          this.$router.push({
+            name: 'Check',
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     getRestaurants() {
       axios.get(`${apiUrl}/restaurants`)
