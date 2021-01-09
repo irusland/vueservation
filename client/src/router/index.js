@@ -1,12 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import HelloWorld from '@/components/HelloWorld';
-import Ping from '@/components/Ping';
-import Books from '@/components/Books';
 import Reservation from '@/components/Reservation';
-import CheckOrderStatus from "../components/CheckOrderStatus";
-import Main from "../components/Main";
-import ImageHolder from "../components/ImageHolder";
+import CheckOrderStatus from '../components/CheckOrderStatus';
+import Main from '../components/Main';
+import Restaurants from '../components/Restaurants';
 
 Vue.use(Router);
 
@@ -25,7 +23,7 @@ export default new Router({
         {
           path: 'restaurants',
           name: 'Restaurants',
-          component: ImageHolder,
+          component: Restaurants,
         },
         {
           path: 'check',

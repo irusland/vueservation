@@ -1,0 +1,74 @@
+<template>
+  <div class="container">
+    <b-form-group v-for="(restaurant, i) in restaurants">
+      <b-card
+        :title="restaurant.address">
+          <b-form-group>
+              <span v-if="!restaurant.available" class="text-danger">unavailable</span>
+              <span v-if="restaurant.available" class="text-success">
+                available
+                <span class="text-primary">{{ formatWorkingHours(restaurant.working_hours) }}
+                </span>
+              </span>
+          </b-form-group>
+        <image-holder
+          v-if="restaurant.available"
+          :restaurant="restaurant"
+          :api-url="apiUrl">
+        </image-holder>
+      </b-card>
+    </b-form-group>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import ImageHolder from './ImageHolder';
+
+const apiUrl = 'http://0.0.0.0:8000';
+
+
+export default {
+  name: 'Restaurants',
+  data() {
+    return {
+      restaurants: [],
+      apiUrl,
+    };
+  },
+  components: {
+    ImageHolder,
+  },
+  methods: {
+    async getRestaurants() {
+      await axios.get(`${apiUrl}/restaurants`)
+        .then((res) => {
+          this.restaurants = [];
+          res.data.forEach((restaurantData) => {
+            this.getRestaurantInfo(restaurantData.id).then((r) => {
+              this.restaurants.push(r);
+            });
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    async getRestaurantInfo(id) {
+      return await axios
+        .get(`${apiUrl}/restaurants/data`, {params: {id}})
+        .then((res) => res.data);
+    },
+    formatWorkingHours(wh) {
+      return `from ${wh[0]} to ${wh[1]}`;
+    },
+  },
+  created() {
+    this.getRestaurants();
+  },
+};
+</script>
+
+<style scoped>
+
+</style>
