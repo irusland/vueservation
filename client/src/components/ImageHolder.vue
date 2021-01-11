@@ -27,7 +27,6 @@
 export default {
   props: {
     restaurant: Object,
-    apiUrl: String,
   },
   data() {
     return {
@@ -48,7 +47,7 @@ export default {
         const paths = this.restaurant.pictures;
         console.log(paths);
         if (paths) {
-          this.pictures = paths.map(p => `${this.apiUrl}/${p}`);
+          this.pictures = paths.map(p => `${process.env.VUE_APP_API}/${p}`);
         }
       }
     },

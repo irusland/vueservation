@@ -49,7 +49,7 @@
               @change="setRestaurantInfo"
             >
             </b-form-select>
-            <image-holder :restaurant="restaurant" :api-url="apiUrl"></image-holder>
+            <image-holder :restaurant="restaurant"></image-holder>
           </b-form-group>
 
           <b-form-group
@@ -108,7 +108,6 @@ import ImageHolder from '@/components/ImageHolder';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
-const apiUrl = 'http://0.0.0.0:8000';
 
 export default {
   name: 'Reservation',
@@ -125,7 +124,6 @@ export default {
       selected: null,
       options: [],
       pictures: [],
-      apiUrl,
       time: null,
       timePickerOptions: null,
       comment: null,
@@ -145,7 +143,7 @@ export default {
       };
       alert(JSON.stringify(data));
       let response = null;
-      axios.post(`${apiUrl}/orders`, data)
+      axios.post(`${process.env.VUE_APP_API}/orders`, data)
         .then((res) => {
           response = res.data;
           this.order_id = res.data.id;
@@ -160,7 +158,7 @@ export default {
         });
     },
     getRestaurants() {
-      axios.get(`${apiUrl}/restaurants`)
+      axios.get(`${process.env.VUE_APP_API}/restaurants`)
         .then((res) => {
           this.options = [];
           res.data.forEach((restaurantData) => {
@@ -177,7 +175,7 @@ export default {
         });
     },
     setRestaurantInfo(id) {
-      axios.get(`${apiUrl}/restaurants/data`,
+      axios.get(`${process.env.VUE_APP_API}/restaurants/data`,
         { params: { id } })
         .then((res) => {
           this.restaurant = res.data;
@@ -200,7 +198,7 @@ export default {
       if (!re.test(this.email)) {
         return false;
       }
-      const path = `${apiUrl}/users`;
+      const path = `${process.env.VUE_APP_API}/users`;
       axios.get(path, {params: {email: this.email}})
         .then((res) => {
           if (res.data.name) {

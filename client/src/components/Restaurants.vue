@@ -13,8 +13,7 @@
           </b-form-group>
         <image-holder
           v-if="restaurant.available"
-          :restaurant="restaurant"
-          :api-url="apiUrl">
+          :restaurant="restaurant">
         </image-holder>
       </b-card>
     </b-form-group>
@@ -25,15 +24,12 @@
 import axios from 'axios';
 import ImageHolder from './ImageHolder';
 
-const apiUrl = 'http://0.0.0.0:8000';
-
 
 export default {
   name: 'Restaurants',
   data() {
     return {
       restaurants: [],
-      apiUrl,
     };
   },
   components: {
@@ -41,7 +37,7 @@ export default {
   },
   methods: {
     async getRestaurants() {
-      await axios.get(`${apiUrl}/restaurants`)
+      await axios.get(`${process.env.VUE_APP_API}/restaurants`)
         .then((res) => {
           this.restaurants = [];
           res.data.forEach((restaurantData) => {
@@ -56,7 +52,7 @@ export default {
     },
     async getRestaurantInfo(id) {
       return await axios
-        .get(`${apiUrl}/restaurants/data`, {params: {id}})
+        .get(`${process.env.VUE_APP_API}/restaurants/data`, {params: {id}})
         .then((res) => res.data);
     },
     formatWorkingHours(wh) {
