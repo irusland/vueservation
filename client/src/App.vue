@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 <!--    <img src="./assets/logo.png">-->
-    <h1 v-if="checkapi()">{{process.env.VUE_APP_API}}</h1>
+    <h1 v-if="checkapi()"></h1>
     <router-view/>
   </div>
 </template>
