@@ -14,8 +14,6 @@
 import axios from 'axios';
 import ImageHolder from '@/components/ImageHolder';
 
-const apiUrl = 'http://0.0.0.0:8000';
-
 export default {
   name: 'check',
 
@@ -28,12 +26,11 @@ export default {
       info: null,
       restaurant: null,
       pictures: null,
-      apiUrl,
     };
   },
   methods: {
     setRestaurantInfo(id) {
-      axios.get(`${apiUrl}/restaurants/data`,
+      axios.get(`${process.env.VUE_APP_API}/restaurants/data`,
         { params: { id } })
         .then((res) => {
           this.restaurant = res.data;
@@ -43,7 +40,7 @@ export default {
   },
   created() {
     this.order_id = localStorage.getItem('order_id');
-    axios.get(`${apiUrl}/orders/${this.order_id}`)
+    axios.get(`${process.env.VUE_APP_API}/orders/${this.order_id}`)
       .then((res) => {
         this.info = res.data;
         this.setRestaurantInfo(this.info.restaurant);
