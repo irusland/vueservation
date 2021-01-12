@@ -141,11 +141,8 @@ export default {
         time: this.time,
         comment: this.comment,
       };
-      alert(JSON.stringify(data));
-      let response = null;
       axios.post(`${process.env.VUE_APP_API}/orders`, data)
         .then((res) => {
-          response = res.data;
           this.order_id = res.data.id;
           this.is_validated = res.data.is_validated;
           localStorage.setItem('order_id', res.data.id);
