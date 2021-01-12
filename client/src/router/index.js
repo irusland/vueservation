@@ -5,10 +5,12 @@ import Reservation from '@/components/Reservation';
 import CheckOrderStatus from '../components/CheckOrderStatus';
 import Main from '../components/Main';
 import Restaurants from '../components/Restaurants';
+import Orders from "../components/Orders";
 
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -31,8 +33,12 @@ export default new Router({
           component: CheckOrderStatus,
           props: true,
         },
+        {
+          path: 'orders',
+          name: 'Orders',
+          component: Orders,
+        },
       ],
     },
   ],
-  mode: 'history',
 });
