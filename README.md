@@ -1,5 +1,8 @@
 # Vueservation
-Frontend web page for restaurant reservation
+Frontend web application for restaurant reservation
+
+Backend was made with [my http server](https://github.com/irusland/httpserver)
+And stored in [mongodb](https://www.mongodb.com)
 
 ## Overwiew
 ![Overwiew](https://user-images.githubusercontent.com/49832869/104622184-fda36780-56a1-11eb-9976-16396cad9646.png)
