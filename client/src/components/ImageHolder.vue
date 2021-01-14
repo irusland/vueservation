@@ -46,9 +46,12 @@ export default {
       if (this.restaurant) {
         const paths = this.restaurant.pictures;
         console.log(paths);
-        if (paths) {
-          this.pictures = paths.map(p => `${process.env.VUE_APP_API}/${p}`);
-        }
+        this.pictures = paths.map((path) => {
+          if (!path.startsWith('http')) {
+            return `${process.env.VUE_APP_API}/pictures/${path}`;
+          }
+          return path;
+        });
       }
     },
   },
