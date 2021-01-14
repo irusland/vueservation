@@ -82,7 +82,7 @@
         </b-card>
       </b-form-group>
       <b-form-group>
-        <b-button type="submit" variant="success" v-b-modal.validation-modal>Submit</b-button>
+        <b-button type="submit" variant="success">Submit</b-button>
       </b-form-group>
     </b-form>
     <b-modal ref="validationModal"
@@ -126,6 +126,7 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
+      this.$refs.validationModal.show();
       const data = {
         email: this.email,
         name: this.name,
