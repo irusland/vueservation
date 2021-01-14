@@ -26,78 +26,70 @@
                       :disabled=isNameAutofilled>
         </b-form-input>
       </b-form-group>
-      <b-card bg-variant="light">
-        <b-form-group
-          label-cols-lg="3"
-          label="Reservation"
-          label-size="lg"
-          label-class="font-weight-bold pt-0"
-          class="mb-0"
-        >
+      <b-form-group>
+        <b-card bg-variant="light">
           <b-form-group
-            label="Choose restaurant"
-            label-for="restaurant"
-            label-cols-sm="3"
-            label-align-sm="right"
+            label-cols-lg="3"
+            label="Reservation"
+            label-size="lg"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
           >
-            <b-form-select
-              required
-              id="restaurant"
-              v-model="selected"
-              :select-size="1"
-              :options="options"
-              @change="setRestaurantInfo"
+            <b-form-group
+              label="Choose restaurant"
+              label-for="restaurant"
+              label-cols-sm="3"
+              label-align-sm="right"
             >
-            </b-form-select>
-            <image-holder :restaurant="restaurant"></image-holder>
-          </b-form-group>
+              <b-form-select
+                required
+                id="restaurant"
+                v-model="selected"
+                :select-size="1"
+                :options="options"
+                @change="setRestaurantInfo"
+              >
+              </b-form-select>
+              <image-holder :restaurant="restaurant"></image-holder>
+            </b-form-group>
 
-          <b-form-group
-            label="Time"
-            label-for="time"
-            label-cols-sm="3"
-            label-align-sm="right"
-          >
-            <date-picker
-              v-model="time"
-              valueType="format"
-              type="time"
-              :input-attr="{required: 'true'}"
-              :disabled="!restaurant"
-              format="HH:mm"
-              :time-picker-options="timePickerOptions"
-            ></date-picker>
-          </b-form-group>
+            <b-form-group
+              label="Time"
+              label-for="time"
+              label-cols-sm="3"
+              label-align-sm="right"
+            >
+              <date-picker
+                v-model="time"
+                valueType="format"
+                type="time"
+                :input-attr="{required: 'true'}"
+                :disabled="!restaurant"
+                format="HH:mm"
+                :time-picker-options="timePickerOptions"
+              ></date-picker>
+            </b-form-group>
 
-          <b-form-group
-            label="Comment"
-            label-for="comment"
-            label-cols-sm="3"
-            label-align-sm="right"
-          >
-            <b-form-input id="comment" v-model="comment"></b-form-input>
+            <b-form-group
+              label="Comment"
+              label-for="comment"
+              label-cols-sm="3"
+              label-align-sm="right"
+            >
+              <b-form-input id="comment" v-model="comment"></b-form-input>
+            </b-form-group>
           </b-form-group>
-        </b-form-group>
-      </b-card>
-      <b-button type="submit" variant="primary" v-b-modal.validation-modal>Submit</b-button>
+        </b-card>
+      </b-form-group>
+      <b-form-group>
+        <b-button type="submit" variant="success" v-b-modal.validation-modal>Submit</b-button>
+      </b-form-group>
     </b-form>
     <b-modal ref="validationModal"
              id="validation-modal"
-             title="Add a new book"
+             title="New order"
              hide-footer>
-      <b-form class="w-100">
-        <b-form-group id="form-title-group"
-                      :label="order_id"
-                      label-for="form-title-input">
-        </b-form-group>
-        <b-form-group id="form-author-group"
-                      label="Author:"
-                      label-for="form-author-input">
-          asdasd
-        </b-form-group>
-        <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
-      </b-form>
+      Order created, you will be automatically redirected
     </b-modal>
   </div>
 </template>
@@ -173,7 +165,7 @@ export default {
     },
     setRestaurantInfo(id) {
       axios.get(`${process.env.VUE_APP_API}/restaurants/data`,
-        { params: { id } })
+        {params: {id}})
         .then((res) => {
           this.restaurant = res.data;
           this.pictures = this.restaurant.pictures;
