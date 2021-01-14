@@ -5,7 +5,10 @@ Backend was made with [my http server](https://github.com/irusland/httpserver/tr
 And stored in [mongodb](https://www.mongodb.com)
 
 ## Overwiew
-![Overwiew](https://user-images.githubusercontent.com/49832869/104622184-fda36780-56a1-11eb-9976-16396cad9646.png)
+### Desktop
+![Desktop](https://user-images.githubusercontent.com/49832869/104622184-fda36780-56a1-11eb-9976-16396cad9646.png)
+### Mobile
+![Mobile](https://user-images.githubusercontent.com/49832869/104624695-ef0a7f80-56a4-11eb-851f-3040bdcfa093.jpg)
 
 ## Reservation interface
 ![Reservation](https://user-images.githubusercontent.com/49832869/104622911-e2852780-56a2-11eb-8102-36635151e2e6.png)
