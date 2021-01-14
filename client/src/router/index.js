@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
 import Reservation from '@/components/Reservation';
 import CheckOrderStatus from '../components/CheckOrderStatus';
 import Main from '../components/Main';
 import Restaurants from '../components/Restaurants';
-import Orders from "../components/Orders";
+import Orders from '../components/Orders';
 
 Vue.use(Router);
 
@@ -16,7 +15,7 @@ export default new Router({
       path: '/',
       component: Main,
       children: [
-        { path: '', component: HelloWorld },
+        { path: '', component: Restaurants },
         {
           path: 'reservation',
           name: 'Reserve',
