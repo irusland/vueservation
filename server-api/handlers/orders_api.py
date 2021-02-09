@@ -3,6 +3,8 @@ from email.mime.text import MIMEText
 
 from ihttpy.requests.request import Request
 from ihttpy.requests.response import Response
+
+from database.mongodb import get_database
 from env import BACKEND_ADDRESS, FRONTEND_ADDRESS
 
 from handlers import email_sender
@@ -16,7 +18,7 @@ def order(req: Request, server):
     body = Request.decode(body)
     order_data = json.loads(body)
 
-    orderer = server.database.get_user(order_data['email'])
+    orderer = get_database().get_user(order_data['email'])
     if orderer:
         orderer = User.from_dict(orderer)
     else:
@@ -25,7 +27,7 @@ def order(req: Request, server):
     new_order = Order(orderer, order_data['restaurant_id'], order_data['time'],
                       order_data['comment'])
 
-    server.database.add_order(new_order.dump())
+    get_database().add_order(new_order.dump())
 
     address = BACKEND_ADDRESS
     link = f'http://{address}/orders/{new_order.validation_url}'
@@ -57,13 +59,13 @@ def order(req: Request, server):
 
 def validate(req: Request, server):
     accept_uid = req.path.split('/')[-1]
-    found = server.database.get_order({'validation_url': accept_uid})
+    found = get_database().get_order({'validation_url': accept_uid})
     if found and not found['is_validated']:
-        server.database.update_order({'_id': found['_id']}, {'is_validated': True})
+        get_database().update_order({'_id': found['_id']}, {'is_validated': True})
 
-        user = server.database.get_user(found['user']['email'])
+        user = get_database().get_user(found['user']['email'])
         if not user:
-            server.database.add_user(
+            get_database().add_user(
                 User.from_dict(found['user']).dump())
 
     body = f'ok'.encode()
@@ -77,7 +79,7 @@ def validate(req: Request, server):
 
 
 def get_all(req: Request, server):
-    orders = [o for o in server.database.get_orders()]
+    orders = [o for o in get_database().get_orders()]
     body = json.dumps(orders).encode()
     headers = [
         ('Content-Type', f'application/json'),
@@ -92,7 +94,7 @@ def get_info(req: Request, server):
     order_id = req.path.split('/')[-1]
     print(order_id)
     target_order: Order = None
-    found = server.database.get_order({'id': order_id})
+    found = get_database().get_order({'id': order_id})
     if found:
         target_order = Order.from_dict(found)
 

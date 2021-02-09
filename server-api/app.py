@@ -61,6 +61,21 @@ def pre_orders_bp(*a, **k):
     return preflight(*a, **k)
 
 
+@config.on(Method.GET).at('/orders/accept-[hash]')
+def order_validate_bp(*a, **k):
+    return validate(*a, **k)
+
+
+@config.on(Method.GET).at('/orders/[id]')
+def order_bp(*a, **k):
+    return get_info(*a, **k)
+
+
+@config.on(Method.GET).at('/orders')
+def orders_all_bp(*a, **k):
+    return get_all(*a, **k)
+
+
 
 
 
