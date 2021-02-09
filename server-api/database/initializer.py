@@ -1,7 +1,7 @@
 import uuid
 
 from objects.restaurant import Restaurant
-import database
+from database.mongodb import Database
 from objects.user import User
 
 RESTAURANTS = [
@@ -10,7 +10,7 @@ RESTAURANTS = [
                'Restaurant description ...',
                ('00:00', '23:00'),
                ['https://www.hot-dinners.com/images/stories/blog/2019/pictureteam.jpg',
-                'rest1.jpg']),
+                'restaurant.jpg']),
     Restaurant(uuid.uuid4().hex,
                '730 Park Avenue',
                'Restaurant description ...',
@@ -33,12 +33,13 @@ USERS = [
 
 
 def main():
-    manager = database.Database()
+    manager = Database()
     for restaurant in RESTAURANTS:
         manager.add_restaurant(restaurant.dump_all())
 
     for user in USERS:
         manager.add_user(user.dump())
+
 
 if __name__ == '__main__':
     main()

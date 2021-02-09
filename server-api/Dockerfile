@@ -7,4 +7,4 @@ COPY secret_tokens .
 
 
 EXPOSE 8000
-CMD python httpserver.py -c config.json -l console
+CMD python app.py

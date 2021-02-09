@@ -3,6 +3,7 @@ import json
 from ihttpy.requests.request import Request
 from ihttpy.requests.response import Response
 
+from database.mongodb import get_database
 
 SUCCESS = {'status': 'success'}
 FAIL = {'status': 'fail'}
@@ -12,7 +13,7 @@ def get_restaurant(req: Request, server):
     restaurant_id = req.query['id'][0]
     body = f'{json.dumps(FAIL)}'.encode()
 
-    found = server.database.get_restaurant(restaurant_id)
+    found = get_database().get_restaurant(restaurant_id)
     body = f'{json.dumps(found)}'.encode()
     headers = [
         ('Content-Type', f'application/json'),
@@ -24,7 +25,7 @@ def get_restaurant(req: Request, server):
 
 
 def get_restaurants(req: Request, server):
-    restaurants = server.database.get_restaurants()
+    restaurants = get_database().get_restaurants()
     body = (f'{json.dumps(restaurants)}'.encode())
     headers = [
         ('Content-Type', f'application/json'),

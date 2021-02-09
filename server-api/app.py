@@ -1,48 +1,76 @@
+import os
 import urllib
 
+import magic
 from ihttpy.exceptions.logger import LogLevel
 from ihttpy.httpserver import Server
+from ihttpy.requests.methods import Method
 from ihttpy.requests.request import Request
 from ihttpy.requests.response import Response
-from ihttpy.requests.methods import Method
 from ihttpy.routing.configurator import FluentConfigurator
+from ihttpy.requests.sender import handle as send_file
+
+from handlers.restaurants_api import get_restaurants, get_restaurant
+from handlers.users_api import get, preflight
+from handlers.orders_api import order, get_all, get_info, validate, preflight
+
+config = FluentConfigurator()
 
 
-configure = FluentConfigurator()
-
-
-@configure.on(Method.GET).at('/getonly')
-@configure.on(Method.GET | Method.OPTIONS).at('/index')
-@configure.on(Method.POST).at('/post')
-def index(request: Request, srv: Server = None):
-    body = f'{request.method} ready for {request.path}'
+@config.on(Method.GET).at('/')
+def index(req: Request, srv: Server):
+    body = urllib.parse.unquote(req.path).encode()
     headers = [
         ('Content-Type', f'text/txt'),
         ('Content-Length', len(body))
     ]
-    response = Response(200, 'OK', headers=headers, body=body.encode())
-    print('<\n', response)
-    return response
+    return Response(200, 'OK', headers, body)
 
 
-@configure.on(Method.GET).at('/[f].[e]')
-def f(req: Request, srv: Server):
-    body = urllib.parse.unquote(req.path)
-    headers = [
-        ('Content-Type', f'text/txt'),
-        ('Content-Length', len(body))
-    ]
-    response = Response(200, 'OK', headers=headers, body=body.encode())
-    print('<\n', response)
-    return response
+@config.on(Method.GET).at('/restaurants')
+def get_restaurants_bp(*a, **k):
+    return get_restaurants(*a, **k)
+
+
+@config.on(Method.GET).at('/restaurants/data')
+def get_restaurant_bp(*a, **k):
+    return get_restaurant(*a, **k)
+
+
+@config.on(Method.GET).at('/pictures/[name].[ext]')
+def send_bp(req: Request, srv: Server):
+    name = req.path.split('/')[-1]
+    mime = magic.Magic(mime=True)
+    filepath = os.path.join('pictures', name)
+    content_type = mime.from_file(filepath)
+    return Response.build_file_res(req, filepath, content_type)
+
+
+@config.on(Method.GET).at('/users')
+def user_bp(*a, **k):
+    return get(*a, **k)
+
+
+@config.on(Method.POST).at('/orders')
+def orders_bp(*a, **k):
+    return order(*a, **k)
+
+
+@config.on(Method.OPTIONS).at('/orders')
+def pre_orders_bp(*a, **k):
+    return preflight(*a, **k)
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
-    configure._host = '0.0.0.0'
-    configure._port = 8080
-    server = Server(
-        configurator=configure,
-        loglevel=LogLevel.CONSOLE,
-    )
+    config._host = '0.0.0.0'
+    config._port = 8000
+    server = Server(config, loglevel=LogLevel.CONSOLE)
     with server as s:
         s.run()

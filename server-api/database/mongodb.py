@@ -75,20 +75,8 @@ class Database:
         collection.update_one(query_elements, {'$set': new_values})
 
 
-def main():
-    client = connect()
-    print('connected')
-    print(client.db)
-
-    db = client['SeriesDB']
-    series_collection = db['series']
-
-    new_show = {
-        "name": "FRIENDS",
-        "year": 1994
-    }
-    print(insert_document(series_collection, new_show))
+database = Database()
 
 
-if __name__ == '__main__':
-    main()
+def get_database():
+    return database

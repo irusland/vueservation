@@ -3,6 +3,7 @@ import json
 from ihttpy.requests.request import Request
 from ihttpy.requests.response import Response
 
+from database.mongodb import get_database
 
 SUCCESS = {'status': 'success'}
 FAIL = {'status': 'fail'}
@@ -11,7 +12,7 @@ FAIL = {'status': 'fail'}
 def get(req: Request, server):
     email = req.query['email'][0]
     body = f'{json.dumps(FAIL)}'.encode()
-    found = server.database.get_user(email)
+    found = get_database().get_user(email)
     if found:
         SUCCESS.update({'name': found.get('name')})
         body = f'{json.dumps(SUCCESS)}'.encode()
