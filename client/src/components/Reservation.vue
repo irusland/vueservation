@@ -179,7 +179,7 @@ export default {
         step: '00:30',
         end: this.restaurant.working_hours[1],
       };
-    }
+    },
   },
   computed: {
     emailValidate() {
