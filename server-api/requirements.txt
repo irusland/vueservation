@@ -1,3 +1,3 @@
 dnspython==2.1.0
-ihttpy==2.0.6
+ihttpy>=2.0.6
 pymongo==3.11.3
