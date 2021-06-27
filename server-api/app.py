@@ -21,7 +21,7 @@ config = DecorativeConfigurator()
 def index(req, srv):
     body = urllib.parse.unquote(req.path).encode()
     headers = [
-        ('Content-Type', f'text/txt'),
+        ('Content-Type', 'text/txt'),
         ('Content-Length', len(body))
     ]
     return Response(200, 'OK', headers, body)
