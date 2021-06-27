@@ -18,7 +18,7 @@ config = DecorativeConfigurator()
 
 
 @config.rule(Method.GET, '/')
-def index(req: Request, srv: Server):
+def index(req, srv):
     body = urllib.parse.unquote(req.path).encode()
     headers = [
         ('Content-Type', f'text/txt'),
@@ -38,7 +38,7 @@ def get_restaurant_bp(*a, **k):
 
 
 @config.rule(Method.GET, '/pictures/[name].[ext]')
-def send_bp(req: Request, srv: Server):
+def send_bp(req, srv):
     name = req.path.split('/')[-1]
     mime = magic.Magic(mime=True)
     filepath = os.path.join('pictures', name)
