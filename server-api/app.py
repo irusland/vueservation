@@ -7,17 +7,17 @@ from ihttpy.httpserver import Server
 from ihttpy.requests.methods import Method
 from ihttpy.requests.request import Request
 from ihttpy.requests.response import Response
-from ihttpy.routing.configurator import FluentConfigurator
-from ihttpy.requests.sender import handle as send_file
+from ihttpy.routing.configurator import DecorativeConfigurator
 
 from handlers.restaurants_api import get_restaurants, get_restaurant
 from handlers.users_api import get, preflight
 from handlers.orders_api import order, get_all, get_info, validate, preflight
 
-config = FluentConfigurator()
+
+config = DecorativeConfigurator()
 
 
-@config.on(Method.GET).at('/')
+@config.rule(Method.GET, '/')
 def index(req: Request, srv: Server):
     body = urllib.parse.unquote(req.path).encode()
     headers = [
@@ -27,17 +27,17 @@ def index(req: Request, srv: Server):
     return Response(200, 'OK', headers, body)
 
 
-@config.on(Method.GET).at('/restaurants')
+@config.rule(Method.GET, '/restaurants')
 def get_restaurants_bp(*a, **k):
     return get_restaurants(*a, **k)
 
 
-@config.on(Method.GET).at('/restaurants/data')
+@config.rule(Method.GET, '/restaurants/data')
 def get_restaurant_bp(*a, **k):
     return get_restaurant(*a, **k)
 
 
-@config.on(Method.GET).at('/pictures/[name].[ext]')
+@config.rule(Method.GET, '/pictures/[name].[ext]')
 def send_bp(req: Request, srv: Server):
     name = req.path.split('/')[-1]
     mime = magic.Magic(mime=True)
@@ -46,41 +46,34 @@ def send_bp(req: Request, srv: Server):
     return Response.build_file_res(req, filepath, content_type)
 
 
-@config.on(Method.GET).at('/users')
+@config.rule(Method.GET, '/users')
 def user_bp(*a, **k):
     return get(*a, **k)
 
 
-@config.on(Method.POST).at('/orders')
+@config.rule(Method.POST, '/orders')
 def orders_bp(*a, **k):
     return order(*a, **k)
 
 
-@config.on(Method.OPTIONS).at('/orders')
+@config.rule(Method.OPTIONS, '/orders')
 def pre_orders_bp(*a, **k):
     return preflight(*a, **k)
 
 
-@config.on(Method.GET).at('/orders/accept-[hash]')
+@config.rule(Method.GET, '/orders/accept-[hash]')
 def order_validate_bp(*a, **k):
     return validate(*a, **k)
 
 
-@config.on(Method.GET).at('/orders/[id]')
+@config.rule(Method.GET, '/orders/[id]')
 def order_bp(*a, **k):
     return get_info(*a, **k)
 
 
-@config.on(Method.GET).at('/orders')
+@config.rule(Method.GET, '/orders')
 def orders_all_bp(*a, **k):
     return get_all(*a, **k)
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
